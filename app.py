@@ -1,7 +1,21 @@
-from typing import List, Tuple
-from Card import Card
+# app.py (Flask server)
+from flask import Flask, request, jsonify, send_from_directory
+import os
 
-def calculate_chosen_card(cards: List[Card]) -> Card:
+app = Flask(__name__, static_folder='static')
+
+class Card:
+    def __init__(self, number, suit):
+        self.number = number
+        self.suit = suit
+    
+    def to_dict(self):
+        return {
+            'number': self.number,
+            'suit': self.suit
+        }
+
+def calculate_chosen_card(cards):
     if len(cards) != 4:
         raise ValueError("Must provide exactly 4 cards")
     
@@ -22,7 +36,7 @@ def calculate_chosen_card(cards: List[Card]) -> Card:
         elif card.number == 'K':
             num_val = 13
         else:
-            num_val = int (card.number)
+            num_val = int(card.number)
         
         # Calculate total card value
         suit_val = suit_values[card.suit]  # Get suit fraction
@@ -44,7 +58,7 @@ def calculate_chosen_card(cards: List[Card]) -> Card:
     else:  # val1 is the smallest
         num_to_add = 2 if val2 > val3 else 1
 
-    result_num = int (card_values[0] + num_to_add)
+    result_num = int(card_values[0] + num_to_add)
     result_num = ((result_num - 1) % 13) + 1  # Wrap around 1-13 correctly
    
     number_map = {1: 'A', 11: 'J', 12: 'Q', 13: 'K'}
@@ -52,14 +66,33 @@ def calculate_chosen_card(cards: List[Card]) -> Card:
 
     return Card(result_num, cards[0].suit)
 
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
+
+@app.route('/api/calculate', methods=['POST'])
+def calculate():
+    data = request.json
+    if not data or 'cards' not in data:
+        return jsonify({'error': 'No cards provided'}), 400
     
+    try:
+        cards_data = data['cards']
+        if len(cards_data) != 4:
+            return jsonify({'error': 'Must provide exactly 4 cards'}), 400
+        
+        # Convert JSON to Card objects
+        cards = [Card(card['number'], card['suit']) for card in cards_data]
+        
+        # Calculate the result
+        result_card = calculate_chosen_card(cards)
+        
+        return jsonify({
+            'result': result_card.to_dict(),
+            'input_cards': [card.to_dict() for card in cards]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
 
-cards = [
-    Card('10', 'hearts'),
-    Card('A', 'spades'),
-    Card('3', 'clubs'),
-    Card('A', 'diamonds')
-]
-
-new_card = calculate_chosen_card(cards)
-print(new_card.to_dict()) 
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
