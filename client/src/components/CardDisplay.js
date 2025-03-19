@@ -18,8 +18,9 @@ const CardDisplay = ({ card }) => {
   // Determine text color based on suit
   const isRed = card.suit === 'hearts' || card.suit === 'diamonds';
   
-  // Try to load the card image - adjust this path based on your actual file naming
-  const imagePath = `/static/static/cards/${card.number}_of_${card.suit}.png`;
+  // Try to load the card image - make sure this path matches your actual file structure
+  const imagePath = `/static/cards/${card.number}_of_${card.suit}.png`;
+  console.log("Attempting to load image from:", imagePath);
   
   // Text-based card display as fallback
   const renderTextCard = () => (
@@ -89,7 +90,10 @@ const CardDisplay = ({ card }) => {
               borderRadius: '10px',
               boxShadow: '0 8px 20px rgba(0,0,0,0.25)'
             }}
-            onError={() => setImageError(true)}
+            onError={(e) => {
+              console.error("Error loading image:", e);
+              setImageError(true);
+            }}
           />
         </div>
       )}
