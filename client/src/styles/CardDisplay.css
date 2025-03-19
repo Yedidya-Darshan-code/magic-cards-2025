@@ -1,0 +1,8 @@
+/* client/src/styles/CardDisplay.css */
+.card-display img {
+    width: 150px;  /* adjust size as needed */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
