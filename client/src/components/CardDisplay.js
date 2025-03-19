@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import '../styles/CardDisplay.css';
 
 const CardDisplay = ({ card }) => {
   if (!card || !card.number || !card.suit) return null;
@@ -20,7 +19,6 @@ const CardDisplay = ({ card }) => {
   
   // Try to load the card image - make sure this path matches your actual file structure
   const imagePath = `/static/cards/${card.number}_of_${card.suit}.png`;
-  console.log("Attempting to load image from:", imagePath);
   
   // Text-based card display as fallback
   const renderTextCard = () => (
@@ -57,7 +55,7 @@ const CardDisplay = ({ card }) => {
   );
   
   return (
-    <div className="result-container" style={{
+    <div style={{
       marginTop: '20px',
       padding: '20px',
       backgroundColor: 'rgba(232, 244, 248, 0.7)',
@@ -69,14 +67,14 @@ const CardDisplay = ({ card }) => {
         marginBottom: '20px',
         fontSize: '1.7rem',
         fontWeight: '600'
-      }}>The Magic Card Is:</h2>
+      }}>Your secret card is</h2>
       
       {imageError ? (
         // Show text card if image fails to load
         renderTextCard()
       ) : (
         // Try to load image first
-        <div className="card-image-container" style={{
+        <div style={{
           transition: 'all 0.5s ease',
           transform: 'scale(1.05)',
           animation: 'pulseCard 1.5s ease-in-out'

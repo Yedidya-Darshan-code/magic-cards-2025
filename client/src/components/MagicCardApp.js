@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import CardSelector from './CardSelector';
 import CardDisplay from './CardDisplay';
-import '../styles/MagicCardApp.css';
 
 const MagicCardApp = () => {
   // Initialize state for four cards
@@ -51,24 +50,29 @@ const MagicCardApp = () => {
   };
 
   return (
-    <div className="magic-card-app">
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '10px' }}>
       <h2 style={{
         color: '#2c3e50',
         fontSize: '1.8rem',
         marginBottom: '25px',
         fontWeight: '500'
-      }}>Select Your Cards</h2>
+      }}>Enter 4 of your cards</h2>
+      
+      {/* Grid layout for card selectors - 2 rows x 2 columns */}
       <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
         gap: '25px',
-        marginBottom: '30px'
+        justifyContent: 'center',
+        marginBottom: '30px',
+        maxWidth: '500px',
+        margin: '0 auto 30px auto'
       }}>
         {cards.map((card, index) => (
           <CardSelector key={index} index={index} card={card} onChange={handleCardChange} />
         ))}
       </div>
+      
       <button 
         onClick={handleCalculate}
         style={{
@@ -87,7 +91,7 @@ const MagicCardApp = () => {
         onMouseOver={(e) => e.target.style.backgroundColor = '#2980b9'}
         onMouseOut={(e) => e.target.style.backgroundColor = '#3498db'}
       >
-        Reveal Magic Card
+        Find my secret card!
       </button>
       {error && <div style={{ color: '#e74c3c', margin: '15px 0', fontWeight: '500' }}>{error}</div>}
       {resultCard && <CardDisplay card={resultCard} />}
