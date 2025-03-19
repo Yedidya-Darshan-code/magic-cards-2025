@@ -17,8 +17,29 @@ const CardDisplay = ({ card }) => {
   // Determine text color based on suit
   const isRed = card.suit === 'hearts' || card.suit === 'diamonds';
   
-  // Try to load the card image - make sure this path matches your actual file structure
-  const imagePath = `/static/cards/${card.number}_of_${card.suit}.png`;
+  // Convert short card names to full names for image paths
+  const getFullCardName = (shortName) => {
+    switch(shortName) {
+      case 'A': return 'ace';
+      case '2': return '2';
+      case '3': return '3';
+      case '4': return '4';
+      case '5': return '5';
+      case '6': return '6';
+      case '7': return '7';
+      case '8': return '8';
+      case '9': return '9';
+      case '10': return '10';
+      case 'J': return 'jack';
+      case 'Q': return 'queen';
+      case 'K': return 'king';
+      default: return shortName;
+    }
+  };
+  
+  // Create the image path with full names
+  const imagePath = `/static/cards/${getFullCardName(card.number)}_of_${card.suit}.png`;
+  console.log("Attempting to load image from:", imagePath);
   
   // Text-based card display as fallback
   const renderTextCard = () => (
