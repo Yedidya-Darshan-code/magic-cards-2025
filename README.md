@@ -97,22 +97,6 @@ magic-cards-2025/
    http://localhost:5000
    ```
 
-## Development
-
-### Running in Development Mode
-1. Run the Flask backend:
-   ```bash
-   python app.py
-   ```
-
-2. In a separate terminal, run the React development server:
-   ```bash
-   cd client
-   npm start
-   ```
-
-3. The React dev server will run on port 3000, and API requests will be proxied to the Flask backend.
-
 ## Author
 Yedidya Darshan - yedidya.darshan@gmail.com
 
